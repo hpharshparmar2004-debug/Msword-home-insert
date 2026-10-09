@@ -26,23 +26,23 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        body {
+        body, html {
+            width: 100%;
+            height: 100%;
             background-color: var(--bg-color);
             color: var(--text-dark);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
 
         /* Screen Management */
         .screen {
             display: none;
-            flex: 1;
+            width: 100%;
+            height: 100vh;
             flex-direction: column;
         }
 
         .screen.active {
-            display: flex;
+            display: flex !important;
         }
 
         /* Login Screen */
@@ -54,19 +54,12 @@
         }
 
         .login-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.98);
             padding: 40px;
             border-radius: 16px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
             width: 100%;
             max-width: 420px;
-            animation: fadeIn 0.6s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .login-card h2 {
@@ -102,7 +95,6 @@
             border: 1px solid var(--border-color);
             border-radius: 8px;
             font-size: 15px;
-            transition: all 0.3s;
         }
 
         .form-control:focus {
@@ -162,7 +154,9 @@
         #instructions-screen {
             justify-content: center;
             align-items: center;
-            padding: 30px;
+            padding: 20px;
+            overflow-y: auto;
+            background: var(--bg-color);
         }
 
         .instruction-card {
@@ -172,6 +166,7 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             max-width: 800px;
             width: 100%;
+            margin: auto;
         }
 
         .instruction-card h2 {
@@ -198,7 +193,7 @@
 
         .instruction-rules {
             margin-bottom: 25px;
-            max-height: 250px;
+            max-height: 220px;
             overflow-y: auto;
             padding-right: 10px;
         }
@@ -228,8 +223,19 @@
         #exam-screen {
             height: 100vh;
             overflow: hidden;
-            display: none;
             flex-direction: column;
+        }
+
+        .fullscreen-bar {
+            background: #1e293b;
+            color: white;
+            font-size: 12px;
+            padding: 4px 15px;
+            text-align: right;
+            flex-shrink: 0;
+        }
+        .fullscreen-bar button {
+            background: none; border: none; color: #93c5fd; cursor: pointer; text-decoration: underline; font-size: 12px;
         }
 
         .exam-header {
@@ -240,6 +246,7 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            flex-shrink: 0;
         }
 
         .exam-header h3 {
@@ -259,6 +266,7 @@
             display: flex;
             flex: 1;
             overflow: hidden;
+            width: 100%;
         }
 
         .question-container {
@@ -367,18 +375,7 @@
             background: #1d4ed8;
         }
 
-        .btn-warning-action {
-            background: var(--review-purple);
-            color: white;
-            border: none;
-        }
-
-        .btn-warning-action:hover {
-            background: #7e22ce;
-        }
-
         /* Question Palette Sidebar */
-        /* Note: <aside> opening tag fixed with < */
         aside.palette-sidebar {
             width: 320px;
             background: #f8fafc;
@@ -386,6 +383,7 @@
             display: flex;
             flex-direction: column;
             padding: 20px;
+            flex-shrink: 0;
         }
 
         .palette-header {
@@ -400,7 +398,7 @@
             grid-template-columns: 1fr 1fr;
             gap: 8px;
             margin-bottom: 15px;
-            font-size: 0.85rem; /* Fixed invalid 0.85srem */
+            font-size: 0.85rem;
         }
 
         .legend-item {
@@ -422,7 +420,7 @@
             overflow-y: auto;
             flex: 1;
             padding-right: 4px;
-            max-height: calc(100vh - 250px);
+            max-height: calc(100vh - 280px);
         }
 
         .palette-btn {
@@ -436,8 +434,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            transition: all 0.1s;
         }
 
         .palette-btn.current {
@@ -519,6 +515,7 @@
             max-width: 650px;
             width: 100%;
             text-align: center;
+            margin: auto;
         }
 
         .result-card h2 { color: var(--primary-blue); margin-bottom: 6px; }
@@ -554,21 +551,9 @@
         }
         .result-item span { font-weight: 700; float: right; }
 
-        /* Fullscreen banner toggle helper */
-        .fullscreen-bar {
-            background: #1e293b;
-            color: white;
-            font-size: 12px;
-            padding: 4px 15px;
-            text-align: right;
-        }
-        .fullscreen-bar button {
-            background: none; border: none; color: #93c5fd; cursor: pointer; text-decoration: underline; font-size: 12px;
-        }
-
         @media(max-width: 768px) {
             .exam-body { flex-direction: column-reverse; overflow-y: auto; }
-            aside.palette-sidebar { width: 100%; height: 220px; }
+            aside.palette-sidebar { width: 100%; height: 240px; }
             .palette-grid { max-height: 120px; }
         }
     </style>
@@ -603,39 +588,37 @@
 
     <!-- INSTRUCTIONS SCREEN -->
     <div id="instructions-screen" class="screen">
-        <div style="display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px;">
-            <div class="instruction-card">
-                <h2>Examination Instructions</h2>
-                <h4>MS Word Home &amp; Insert Tab — Practice Set</h4>
-                
-                <div class="exam-details-grid">
-                    <div><strong>Examination Name:</strong> MS Word Practice Set</div>
-                    <div><strong>Total Questions:</strong> 100</div>
-                    <div><strong>Duration:</strong> 60 Minutes</div>
-                    <div><strong>Maximum Marks:</strong> 100</div>
-                    <div><strong>Question Type:</strong> Single-correct MCQ</div>
-                    <div><strong>Negative Marking:</strong> None</div>
-                </div>
-
-                <div class="instruction-rules">
-                    <ul>
-                        <li>The clock has been set at the server and the countdown timer at the top right corner of your screen will display the remaining time for you to complete the exam.</li>
-                        <li>The question palette displayed on the right side of the screen shows the status of each question using color codes (Not Visited, Visited but Not Answered, Answered, Marked for Review).</li>
-                        <li>You can click on any question number in the palette to go to that question directly.</li>
-                        <li>To select your answer, click on one of the option buttons.</li>
-                        <li>To change your chosen answer, click another option or click the <strong>Clear Response</strong> button.</li>
-                        <li>To save your answer, you must click <strong>Save &amp; Next</strong> or <strong>Mark for Review &amp; Next</strong>.</li>
-                        <li>The examination will automatically submit when the countdown timer reaches zero.</li>
-                    </ul>
-                </div>
-
-                <label class="checkbox-container">
-                    <input type="checkbox" id="accept-instructions" onchange="toggleStartExamBtn()">
-                    I have read and understood the instructions. All computer hardware allotted to me are in proper working condition.
-                </label>
-
-                <button type="button" id="start-exam-btn" class="btn" disabled style="opacity: 0.6; cursor: not-allowed;" onclick="startExamination()">Start Examination</button>
+        <div class="instruction-card">
+            <h2>Examination Instructions</h2>
+            <h4>MS Word Home &amp; Insert Tab — Practice Set</h4>
+            
+            <div class="exam-details-grid">
+                <div><strong>Examination Name:</strong> MS Word Practice Set</div>
+                <div><strong>Total Questions:</strong> 100</div>
+                <div><strong>Duration:</strong> 60 Minutes</div>
+                <div><strong>Maximum Marks:</strong> 100</div>
+                <div><strong>Question Type:</strong> Single-correct MCQ</div>
+                <div><strong>Negative Marking:</strong> None</div>
             </div>
+
+            <div class="instruction-rules">
+                <ul>
+                    <li>The clock has been set at the server and the countdown timer at the top right corner of your screen will display the remaining time for you to complete the exam.</li>
+                    <li>The question palette displayed on the right side of the screen shows the status of each question using color codes (Not Visited, Visited but Not Answered, Answered, Marked for Review).</li>
+                    <li>You can click on any question number in the palette to go to that question directly.</li>
+                    <li>To select your answer, click on one of the option buttons.</li>
+                    <li>To change your chosen answer, click another option or click the <strong>Clear Response</strong> button.</li>
+                    <li>To save your answer, you must click <strong>Save &amp; Next</strong> or <strong>Mark for Review &amp; Next</strong>.</li>
+                    <li>The examination will automatically submit when the countdown timer reaches zero.</li>
+                </ul>
+            </div>
+
+            <label class="checkbox-container">
+                <input type="checkbox" id="accept-instructions" onchange="toggleStartExamBtn()">
+                I have read and understood the instructions. All computer hardware allotted to me are in proper working condition.
+            </label>
+
+            <button type="button" id="start-exam-btn" class="btn" disabled style="opacity: 0.6; cursor: not-allowed;" onclick="startExamination()">Start Examination</button>
         </div>
     </div>
 
@@ -659,9 +642,7 @@
                 <div class="question-text" id="question-title-text">
                     Loading question...
                 </div>
-                <div class="options-list" id="options-container">
-                    <!-- Options populated dynamically -->
-                </div>
+                <div class="options-list" id="options-container"></div>
                 <div class="exam-footer-controls">
                     <div class="btn-group-left">
                         <button class="btn-action" onclick="markForReviewAndNext()">Mark for Review &amp; Next</button>
@@ -683,9 +664,7 @@
                     <div class="legend-item"><div class="legend-dot" style="background:#dcfce7; border:1px solid #86efac;"></div><span>Answered</span></div>
                     <div class="legend-item"><div class="legend-dot" style="background:#f3e8ff; border:1px solid #d8b4fe;"></div><span>Marked</span></div>
                 </div>
-                <div class="palette-grid" id="palette-grid">
-                    <!-- Palette buttons populated dynamically -->
-                </div>
+                <div class="palette-grid" id="palette-grid"></div>
                 <button class="submit-exam-btn" onclick="openSubmitModal()">Submit Examination</button>
             </aside>
         </div>
@@ -696,9 +675,7 @@
         <div class="modal-card">
             <h3>Confirm Examination Submission</h3>
             <p style="margin-bottom: 15px; font-size: 14px; color: var(--text-light);">Please review your examination summary before final submission:</p>
-            <div class="modal-stats" id="modal-stats-box">
-                <!-- Stat counts populated dynamically -->
-            </div>
+            <div class="modal-stats" id="modal-stats-box"></div>
             <div class="modal-buttons">
                 <button class="btn-action" style="flex:1;" onclick="closeSubmitModal()">Cancel / Return</button>
                 <button class="btn-action btn-primary-action" style="flex:1; background: var(--success-green);" onclick="confirmFinalSubmission()">Submit Final Answer</button>
@@ -730,664 +707,131 @@
         </div>
     </div>
 
-    <!-- QUESTION BANK & JAVASCRIPT -->
     <script>
-        // Exactly 100 Professional Theoretical Microsoft Word MCQs
         const rawQuestionBank = [
-            // SECTION A: HOME TAB (1 - 60)
-            // 1-12: Clipboard Group
-            {
-                id: 1,
-                question: "Which keyboard shortcut is used to cut selected text or objects in Microsoft Word?",
-                options: ["Ctrl + C", "Ctrl + X", "Ctrl + V", "Ctrl + Z"],
-                answer: 1
-            },
-            {
-                id: 2,
-                question: "What is the primary function of the Format Painter tool found in the Clipboard group?",
-                options: ["To paint background colors onto tables", "To copy formatting from one place and apply it to another", "To insert vector illustrations into documents", "To format paragraph line spacing automatically"],
-                answer: 1
-            },
-            {
-                id: 3,
-                question: "Which keyboard shortcut is used to copy selected text to the clipboard?",
-                options: ["Ctrl + C", "Ctrl + X", "Ctrl + V", "Ctrl + A"],
-                answer: 0
-            },
-            {
-                id: 4,
-                question: "Which shortcut pastes the content currently held on the clipboard?",
-                options: ["Ctrl + P", "Ctrl + V", "Ctrl + Shift + V", "Ctrl + Alt + V"],
-                answer: 1
-            },
-            {
-                id: 5,
-                question: "How many separate copied or cut items can the Office Clipboard hold simultaneously in supported desktop versions?",
-                options: ["1 item", "5 items", "24 items", "Unlimited"],
-                answer: 2
-            },
-            {
-                id: 6,
-                question: "Which keyboard shortcut sequence copies the formatting of selected text?",
-                options: ["Ctrl + Shift + C", "Ctrl + Alt + C", "Ctrl + C", "Alt + Shift + C"],
-                answer: 0
-            },
-            {
-                id: 7,
-                question: "Which keyboard shortcut sequence applies copied formatting to selected text in supported versions of Word?",
-                options: ["Ctrl + Shift + V", "Ctrl + Alt + V", "Ctrl + V", "Alt + Shift + V"],
-                answer: 0
-            },
-            {
-                id: 8,
-                question: "When pasting text using the Paste Options dropdown, which option strips all formatting and matches the destination paragraph style?",
-                options: ["Keep Source Formatting", "Merge Formatting", "Keep Text Only", "Picture"],
-                answer: 2
-            },
-            {
-                id: 9,
-                question: "Where is the Clipboard group located on the Microsoft Word ribbon interface?",
-                options: ["Insert Tab, far right", "Home Tab, far left", "View Tab, center", "Design Tab, left"],
-                answer: 1
-            },
-            {
-                id: 10,
-                question: "What happens when you click the dialog box launcher in the bottom-right corner of the Clipboard group?",
-                options: ["It opens the Font dialog box", "It opens the Office Clipboard task pane", "It opens Find and Replace", "It clears all clipboard history"],
-                answer: 1
-            },
-            {
-                id: 11,
-                question: "Which action does the 'Cut' command perform compared to 'Copy'?",
-                options: ["Removes the selected content and places it on the clipboard", "Copies the content without deleting it", "Permanently deletes the text without storing it", "Saves the text directly to cloud storage"],
-                answer: 0
-            },
-            {
-                id: 12,
-                question: "What is the primary advantage of using the Office Clipboard task pane over standard paste?",
-                options: ["It compresses file size", "It allows pasting multiple previously copied items selectively", "It translates text automatically", "It checks spelling and grammar"],
-                answer: 1
-            },
-
-            // 13-30: Font Group
-            {
-                id: 13,
-                question: "Which keyboard shortcut makes selected text bold?",
-                options: ["Ctrl + B", "Ctrl + I", "Ctrl + U", "Ctrl + D"],
-                answer: 0
-            },
-            {
-                id: 14,
-                question: "Which shortcut applies italic formatting to selected text?",
-                options: ["Ctrl + T", "Ctrl + I", "Ctrl + Shift + I", "Ctrl + Alt + I"],
-                answer: 1
-            },
-            {
-                id: 15,
-                question: "Which shortcut underlines selected text?",
-                options: ["Ctrl + Line", "Ctrl + U", "Ctrl + Shift + U", "Ctrl + E"],
-                answer: 1
-            },
-            {
-                id: 16,
-                question: "Which keyboard shortcut opens the Font dialog box for advanced character formatting?",
-                options: ["Ctrl + F", "Ctrl + D", "Ctrl + Shift + F", "Ctrl + Font"],
-                answer: 1
-            },
-            {
-                id: 17,
-                question: "What is the shortcut to clear all character formatting from selected text, returning it to the default style?",
-                options: ["Ctrl + Q", "Ctrl + Spacebar", "Ctrl + Shift + N", "Ctrl + Delete"],
-                answer: 1
-            },
-            {
-                id: 18,
-                question: "Which shortcut applies Superscript formatting to selected text?",
-                options: ["Ctrl + Shift + =", "Ctrl + =", "Ctrl + Alt + =", "Ctrl + Shift + +"],
-                answer: 0
-            },
-            {
-                id: 19,
-                question: "Which shortcut applies Subscript formatting to selected text?",
-                options: ["Ctrl + Shift + Sub", "Ctrl + =", "Ctrl + Alt + -", "Ctrl + Minus"],
-                answer: 1
-            },
-            {
-                id: 20,
-                question: "Which keyboard shortcut cycles through letter cases (Sentence case, lowercase, UPPERCASE, Capitalize Each Word, TOGGLE CASE)?",
-                options: ["F3", "Shift + F3", "Ctrl + Shift + F3", "Alt + F3"],
-                answer: 1
-            },
-            {
-                id: 21,
-                question: "What do the keyboard shortcuts Ctrl + ] and Ctrl + [ do to selected font size in Microsoft Word?",
-                options: ["Increase/Decrease font size by one point", "Increase/Decrease font size by 2 points", "Change font family", "Adjust line spacing"],
-                answer: 0
-            },
-            {
-                id: 22,
-                question: "Which keyboard shortcut combination increases font size using preset point increments in supported desktop versions?",
-                options: ["Ctrl + Shift + >", "Ctrl + Shift + <", "Ctrl + Alt + >", "Ctrl + Alt + Shift"],
-                answer: 0
-            },
-            {
-                id: 23,
-                question: "What is the purpose of the Strikethrough command in the Font group?",
-                options: ["Draws a horizontal line through the center of text", "Draws a line underneath text", "Highlights text in neon yellow", "Crosses out text with a double underline"],
-                answer: 0
-            },
-            {
-                id: 24,
-                question: "What does the Text Highlight Color tool do?",
-                options: ["Changes text font color", "Applies a bright background color behind selected text", "Changes paragraph shading across the entire margin", "Adds a drop shadow"],
-                answer: 1
-            },
-            {
-                id: 25,
-                question: "Which feature in the Font group provides modern visual styling like shadows, reflections, and glowing text effects?",
-                options: ["Text Effects and Typography", "Font Color Palette", "Styles Pane", "WordArt Gallery"],
-                answer: 0
-            },
-            {
-                id: 26,
-                question: "What is the default font size in points for a new blank document in Microsoft Word (recent versions)?",
-                options: ["10 pt", "11 pt", "12 pt", "14 pt"],
-                answer: 1
-            },
-            {
-                id: 27,
-                question: "What is the default font family for standard documents in recent versions of Microsoft Word?",
-                options: ["Times New Roman", "Arial", "Calibri", "Courier New"],
-                answer: 2
-            },
-            {
-                id: 28,
-                question: "Which button in the Font group is represented by an 'A' with a pink eraser icon?",
-                options: ["Change Case", "Clear All Formatting", "Text Highlight Color", "Font Color"],
-                answer: 1
-            },
-            {
-                id: 29,
-                question: "Can you apply gradient colors directly to regular body text using the standard Font Color dropdown?",
-                options: ["Yes, through the standard palette", "No, gradients require Text Effects and Typography", "Only in Word for Web", "Never in Microsoft Word"],
-                answer: 1
-            },
-            {
-                id: 30,
-                question: "Which shortcut decreases font size using preset point increments in supported desktop versions?",
-                options: ["Ctrl + Shift + <", "Ctrl + Shift + >", "Ctrl + [", "Ctrl + ]"],
-                answer: 0
-            },
-
-            // 31-48: Paragraph Group
-            {
-                id: 31,
-                question: "Which keyboard shortcut aligns a paragraph to the Left?",
-                options: ["Ctrl + L", "Ctrl + E", "Ctrl + R", "Ctrl + J"],
-                answer: 0
-            },
-            {
-                id: 32,
-                question: "Which shortcut centers a paragraph?",
-                options: ["Ctrl + C", "Ctrl + E", "Ctrl + T", "Ctrl + M"],
-                answer: 1
-            },
-            {
-                id: 33,
-                question: "Which shortcut aligns a paragraph to the Right?",
-                options: ["Ctrl + R", "Ctrl + Right Arrow", "Ctrl + Shift + R", "Ctrl + Alt + R"],
-                answer: 0
-            },
-            {
-                id: 34,
-                question: "Which keyboard shortcut justifies a paragraph (aligns text to both left and right margins)?",
-                options: ["Ctrl + Z", "Ctrl + Y", "Ctrl + J", "Ctrl + F"],
-                answer: 2
-            },
-            {
-                id: 35,
-                question: "What does the keyboard shortcut Ctrl + M do to a paragraph?",
-                options: ["Moves paragraph to the next page", "Increases the paragraph indent", "Decreases the paragraph indent", "Applies medium line spacing"],
-                answer: 1
-            },
-            {
-                id: 36,
-                question: "Which keyboard shortcut decreases the paragraph indent?",
-                options: ["Ctrl + Shift + M", "Ctrl + Shift + D", "Ctrl + Alt + M", "Ctrl + M"],
-                answer: 0
-            },
-            {
-                id: 37,
-                question: "What shortcut sets paragraph line spacing to single (1.0)?",
-                options: ["Ctrl + 1", "Ctrl + S", "Ctrl + Single", "Ctrl + Shift + 1"],
-                answer: 0
-            },
-            {
-                id: 38,
-                question: "What shortcut sets paragraph line spacing to double (2.0)?",
-                options: ["Ctrl + D", "Ctrl + 2", "Ctrl + Shift + 2", "Ctrl + Double"],
-                answer: 1
-            },
-            {
-                id: 39,
-                question: "What shortcut sets paragraph line spacing to 1.5 lines?",
-                options: ["Ctrl + 1.5", "Ctrl + 5", "Ctrl + 3", "Ctrl + 15"],
-                answer: 1
-            },
-            {
-                id: 40,
-                question: "What is the function of the shortcut Ctrl + Q in Microsoft Word?",
-                options: ["Quit application", "Clear paragraph formatting", "Quick print", "Create new document"],
-                answer: 1
-            },
-            {
-                id: 41,
-                question: "Which keyboard shortcut toggles the display of non-printing formatting marks (like paragraph symbols and spaces)?",
-                options: ["Ctrl + Shift + 8", "Ctrl + *", "Ctrl + H", "Ctrl + Alt + 8"],
-                answer: 0
-            },
-            {
-                id: 42,
-                question: "What tool in the Paragraph group is used to arrange selected text alphabetically or numerically?",
-                options: ["Align", "Sort", "Filter", "Organize"],
-                answer: 1
-            },
-            {
-                id: 43,
-                question: "What is the difference between bulleted lists and numbered lists?",
-                options: ["Numbered lists show hierarchical sequence, bullets show unordered items", "Bullets can only be squares, numbers cannot be customized", "Numbered lists cannot have sub-levels", "There is no functional difference"],
-                answer: 0
-            },
-            {
-                id: 44,
-                question: "Which list feature in the Paragraph group allows you to create hierarchical outlines with multiple sub-levels?",
-                options: ["Multilevel List", "Bulleted List", "Table of Contents", "Indent Marker"],
-                answer: 0
-            },
-            {
-                id: 45,
-                question: "What does the Shading bucket tool in the Paragraph group do?",
-                options: ["Changes font color of text", "Colors the background area behind a selected paragraph or table cell", "Adds a solid border around the page", "Highlights specific words"],
-                answer: 1
-            },
-            {
-                id: 46,
-                question: "How do paragraph spacing (Space Before/After) differ from line spacing?",
-                options: ["Paragraph spacing controls space between entire paragraphs, line spacing controls space between lines within the same paragraph", "Line spacing is measured in inches, paragraph spacing in pixels", "Paragraph spacing only applies to headings", "There is no difference"],
-                answer: 0
-            },
-            {
-                id: 47,
-                question: "Which border option allows you to place a horizontal dividing line across the page instantly?",
-                options: ["Outside Border", "Horizontal Line", "Bottom Border", "Grid Border"],
-                answer: 2
-            },
-            {
-                id: 48,
-                question: "What happens when you apply 'Justify' alignment to a paragraph with a very short final line?",
-                options: ["The final line stretches across the entire width of the page", "The final line remains left-aligned", "The paragraph becomes centered", "The text is automatically hyphenated"],
-                answer: 1
-            },
-
-            // 49-54: Styles Group
-            {
-                id: 49,
-                question: "What is a Style in Microsoft Word?",
-                options: ["A collection of formatting settings (font, size, color) saved with a name for consistent application", "A theme color palette for charts", "An automated grammar correction tool", "A template for page margins"],
-                answer: 0
-            },
-            {
-                id: 50,
-                question: "What is the primary benefit of using built-in heading styles (Heading 1, Heading 2) instead of manual formatting?",
-                options: ["They automatically generate Navigation Pane entries and Navigation/Table of Contents data", "They reduce file size by 90%", "They make text uneditable by others", "They convert text to images"],
-                answer: 0
-            },
-            {
-                id: 51,
-                question: "What is the default paragraph style applied to new text in a blank Word document?",
-                options: ["Heading 1", "Normal", "Subtitle", "Intense Quote"],
-                answer: 1
-            },
-            {
-                id: 52,
-                question: "How does 'Direct Formatting' differ from using 'Styles'?",
-                options: ["Direct formatting applies manual formatting to specific text; Styles apply predefined sets of rules that can be updated globally across the document",
-                "Direct formatting is only for tables, styles are for text",
-                "Direct formatting cannot be undone",
-                "Styles are only available in the Insert tab"],
-                answer: 0
-            },
-            {
-                id: 53,
-                question: "Where is the Styles gallery located?",
-                options: ["Home Tab, Styles group", "Insert Tab, Text group", "Design Tab, Document Formatting group", "View Tab, Window group"],
-                answer: 0
-            },
-            {
-                id: 54,
-                question: "What feature allows you to change the overall color and font set of all styles in a document simultaneously?",
-                options: ["Theme Sets in Design Tab", "Find and Replace", "Format Painter", "Style Inspector"],
-                answer: 0
-            },
-
-            // 55-60: Editing Group
-            {
-                id: 55,
-                question: "Which keyboard shortcut opens the Find navigation pane?",
-                options: ["Ctrl + F", "Ctrl + H", "Ctrl + A", "Ctrl + S"],
-                answer: 0
-            },
-            {
-                id: 56,
-                question: "Which keyboard shortcut opens the Find and Replace dialog box?",
-                options: ["Ctrl + R", "Ctrl + H", "Ctrl + F", "Ctrl + Shift + H"],
-                answer: 1
-            },
-            {
-                id: 57,
-                question: "Which keyboard shortcut selects all content in the current document?",
-                options: ["Ctrl + A", "Ctrl + S", "Ctrl + All", "Ctrl + Shift + A"],
-                answer: 0
-            },
-            {
-                id: 58,
-                question: "What is the primary purpose of the Replace feature in Microsoft Word?",
-                options: ["To swap two paragraphs", "To search for specific text and substitute it with alternative text globally or selectively", "To replace damaged font files", "To switch document templates"],
-                answer: 1
-            },
-            {
-                id: 59,
-                question: "What advanced selection option allows you to select all text with similar formatting throughout the document?",
-                options: ["Select Text with Similar Formatting", "Select All", "Advanced Select", "Object Selector"],
-                answer: 0
-            },
-            {
-                id: 60,
-                question: "Where is the Editing group located on the Home tab ribbon?",
-                options: ["Far left side", "Center", "Far right side", "On the Quick Access Toolbar"],
-                answer: 2
-            },
-
-            // SECTION B: INSERT TAB (61 - 100)
-            // 61-66: Pages Group
-            {
-                id: 61,
-                question: "Which keyboard shortcut inserts a manual Page Break immediately?",
-                options: ["Ctrl + Enter", "Ctrl + Shift + Enter", "Alt + Enter", "Shift + Enter"],
-                answer: 0
-            },
-            {
-                id: 62,
-                question: "What is the difference between inserting a Blank Page and inserting a Page Break?",
-                options: ["A Blank Page inserts a whole empty page at the cursor location, whereas a Page Break pushes subsequent content to the top of the next page",
-                "A Page Break deletes existing content, Blank Page preserves it",
-                "Blank pages can only be added at the end of a document",
-                "There is no difference"],
-                answer: 0
-            },
-            {
-                id: 63,
-                question: "What is the purpose of the Cover Page feature in the Pages group?",
-                options: ["To insert professionally designed pre-formatted title pages at the beginning of a document", "To protect the document with a password", "To add a watermark", "To create a table of contents"],
-                answer: 0
-            },
-            {
-                id: 64,
-                question: "Where is the Pages group located on the ribbon?",
-                options: ["Insert Tab, far left", "Home Tab, far right", "Layout Tab, center", "Review Tab, left"],
-                answer: 0
-            },
-            {
-                id: 65,
-                question: "If you want to end a paragraph without creating a new paragraph (forcing a line break within the same paragraph), which shortcut do you use?",
-                options: ["Shift + Enter", "Ctrl + Enter", "Alt + Enter", "Enter alone"],
-                answer: 0
-            },
-            {
-                id: 66,
-                question: "Why are page breaks preferred over pressing the Enter key repeatedly to start a new page?",
-                options: ["Page breaks maintain proper layout even if text is added or deleted earlier in the document", "Page breaks reduce file size by half", "Enter key is disabled on page 2", "Page breaks enable spell check"],
-                answer: 0
-            },
-
-            // 67-74: Tables Group
-            {
-                id: 67,
-                question: "What is a Table in Microsoft Word primarily used for?",
-                options: ["Organizing and presenting data in rows and columns", "Inserting mathematical formulas only", "Creating vector graphics", "Designing page borders"],
-                answer: 0
-            },
-            {
-                id: 68,
-                question: "How can you convert existing comma-separated or tab-separated text into a structured table?",
-                options: ["Using the 'Convert Text to Table' wizard in the Tables group", "Using Find and Replace", "Using Format Painter", "It is not possible in Word"],
-                answer: 0
-            },
-            {
-                id: 69,
-                question: "What is the intersection of a row and a column in a Word table called?",
-                options: ["A Cell", "A Block", "A Field", "A Grid"],
-                answer: 0
-            },
-            {
-                id: 70,
-                question: "Which context-sensitive tabs appear automatically when a table is selected in Microsoft Word?",
-                options: ["Table Design and Layout", "Format and Edit", "Insert and Draw", "Chart Tools"],
-                answer: 0
-            },
-            {
-                id: 71,
-                question: "Can you perform basic mathematical calculations (like SUM or AVERAGE) inside a Microsoft Word table?",
-                options: ["Yes, using formula fields", "No, formulas are restricted to Excel", "Only if connected to an external database", "Only in PDF exports"],
-                answer: 0
-            },
-            {
-                id: 72,
-                question: "What happens when you press the Tab key while typing in the bottom-right cell of an existing Word table?",
-                options: ["A new row is automatically added below", "The cursor moves to the start of the document", "Nothing happens", "The table is deleted"],
-                answer: 0
-            },
-            {
-                id: 73,
-                question: "How do you select an entire column in a Word table quickly using the mouse?",
-                options: ["Click just above the top border of the column", "Double click any cell", "Triple click inside the first cell", "Drag across all cells manually"],
-                answer: 0
-            },
-            {
-                id: 74,
-                question: "What is the purpose of splitting cells in a table?",
-                options: ["To divide a single cell into multiple rows or columns", "To delete the cell contents", "To merge two tables together", "To convert table to text"],
-                answer: 0
-            },
-
-            // 75-82: Illustrations Group
-            {
-                id: 75,
-                question: "Which feature in the Illustrations group allows you to insert graphic files stored on your local computer?",
-                options: ["Pictures", "Shapes", "SmartArt", "Icons"],
-                answer: 0
-            },
-            {
-                id: 76,
-                question: "What is the primary purpose of SmartArt graphics in Microsoft Word?",
-                options: ["To create professional visual information and diagrams (like organizational charts, processes, and cycles)", "To edit photographs with filters", "To plot complex mathematical functions", "To insert vector logos"],
-                answer: 0
-            },
-            {
-                id: 77,
-                question: "Which tool in the Illustrations group allows you to capture and insert an image of an active window on your desktop directly into your document?",
-                options: ["Screenshot", "Online Pictures", "Icons", "Chart"],
-                answer: 0
-            },
-            {
-                id: 78,
-                question: "What type of visual representation does the Chart tool insert into Word documents?",
-                options: ["Data-driven graphical charts (Bar, Pie, Line, Column) linked to Excel data worksheets", "Hand-drawn sketches", "Raster photo filters", "Animation timelines"],
-                answer: 0
-            },
-            {
-                id: 79,
-                question: "What happens when you insert pre-drawn geometric objects like rectangles, arrows, or callouts from the Shapes gallery?",
-                options: ["They act as vector objects that can be formatted, resized, and layered with text", "They instantly convert into tables", "They are saved as separate image files", "They replace the document text"],
-                answer: 0
-            },
-            {
-                id: 80,
-                question: "What is the function of 'Text Wrapping' around inserted illustrations?",
-                options: ["It controls how surrounding paragraph text flows around or interacts with the image (e.g., Square, Tight, Through, Behind Text)", "It translates text inside the image", "It adds a caption automatically", "It compresses the image file size"],
-                answer: 0
-            },
-            {
-                id: 81,
-                question: "Why is maintaining aspect ratio important when resizing inserted pictures?",
-                options: ["It prevents the image from becoming distorted or stretched disproportionately", "It reduces the document page count", "It increases print resolution automatically", "It is required by copyright law"],
-                answer: 0
-            },
-            {
-                id: 82,
-                question: "Where is the Illustrations group located on the ribbon?",
-                options: ["Insert Tab", "Home Tab", "Design Tab", "Review Tab"],
-                answer: 0
-            },
-
-            // 83-88: Links Group
-            {
-                id: 83,
-                question: "Which keyboard shortcut is used to insert a Hyperlink in Microsoft Word?",
-                options: ["Ctrl + K", "Ctrl + H", "Ctrl + L", "Ctrl + Link"],
-                answer: 0
-            },
-            {
-                id: 84,
-                question: "What is the primary function of a Bookmark in Microsoft Word?",
-                options: ["To mark a specific location or position in a document so you can easily jump back to it later", "To save a webpage to your browser favorites", "To bookmark print pages", "To highlight text in yellow"],
-                answer: 0
-            },
-            {
-                id: 85,
-                question: "What does a Cross-reference allow you to do?",
-                options: ["Insert a dynamic reference to specific document items (like headings, figures, or footnotes) that update automatically", "Link to external websites", "Translate text across languages", "Insert footnotes at the end of the book"],
-                answer: 0
-            },
-            {
-                id: 86,
-                question: "Can hyperlinks in Word link to external web pages, email addresses, or specific locations within the same document?",
-                options: ["Yes, to all of them", "Only to external web pages", "Only to email addresses", "Only to local files"],
-                answer: 0
-            },
-            {
-                id: 87,
-                question: "How do you follow an active hyperlink in a Word document while editing?",
-                options: ["Hold Ctrl and click the hyperlink", "Double click the link", "Right-click and select Open", "Press Enter on the link"],
-                answer: 0
-            },
-            {
-                id: 88,
-                question: "Where is the Links group located on the ribbon?",
-                options: ["Insert Tab", "Home Tab", "Reference Tab", "View Tab"],
-                answer: 0
-            },
-
-            // 89-94: Header & Footer Group
-            {
-                id: 89,
-                question: "What is the purpose of a Header in a Microsoft Word document?",
-                options: ["To display repeating text, document titles, or dates at the top margin of every page", "To create a cover page title", "To add footnotes at the end of paragraphs", "To format table headers"],
-                answer: 0
-            },
-            {
-                id: 90,
-                question: "What is a Footer used for?",
-                options: ["To display repeating content like page numbers, author names, or file paths at the bottom margin of pages", "To insert endnotes", "To add table borders", "To create a bibliography"],
-                answer: 0
-            },
-            {
-                id: 91,
-                question: "How can you make the header and footer on the first page of a document different from the rest of the document?",
-                options: ["Check the 'Different First Page' option in Header & Footer design tools", "Delete the header manually on page 1", "Use a separate Word document", "Insert a section break and unlink headers"],
-                answer: 0
-            },
-            {
-                id: 92,
-                question: "Where are Headers and Footers located on the printed page margins?",
-                options: ["Within the top and bottom margin areas", "In the center of the text body", "Outside the physical page boundaries", "Inside tables only"],
-                answer: 0
-            },
-            {
-                id: 93,
-                question: "Can you insert dynamic page numbers (e.g., Page 1 of 10) into headers or footers?",
-                options: ["Yes, using Quick Parts or Page Number fields", "No, page numbers must be typed manually", "Only in Adobe PDF format", "Only on the final page"],
-                answer: 0
-            },
-            {
-                id: 94,
-                question: "Which tab houses the Header & Footer group?",
-                options: ["Insert Tab", "Home Tab", "Layout Tab", "Review Tab"],
-                answer: 0
-            },
-
-            // 95-98: Text Group
-            {
-                id: 95,
-                question: "What is the purpose of the Drop Cap feature in the Text group?",
-                options: ["To create a large decorative capital letter at the beginning of a paragraph, spanning multiple lines", "To convert lowercase text to uppercase", "To drop text into a footnote", "To insert a watermark"],
-                answer: 0
-            },
-            {
-                id: 96,
-                question: "What is WordArt used for?",
-                options: ["Creating stylized decorative text with special effects like shadows, gradients, and outlines", "Checking spelling and grammar", "Translating foreign languages", "Creating flowcharts"],
-                answer: 0
-            },
-            {
-                id: 97,
-                question: "What is a Text Box used for in Microsoft Word?",
-                options: ["To place movable, independently positioned blocks of text anywhere on the page layout", "To enclose paragraphs in permanent borders", "To write formulas", "To create tables"],
-                answer: 0
-            },
-            {
-                id: 98,
-                question: "What is the function of the 'Date & Time' tool in the Text group?",
-                options: ["To insert the current date and time with options for automatic updating", "To set the computer system clock", "To schedule document backups", "To calculate deadlines"],
-                answer: 0
-            },
-
-            // 99-100: Symbols Group
-            {
-                id: 99,
-                question: "What is the purpose of the Equation tool in the Symbols group?",
-                options: ["To insert formatted mathematical and scientific equations (like fractions, integrals, and matrices)", "To solve algebraic homework automatically", "To calculate table totals", "To check syntax in code"],
-                answer: 0
-            },
-            {
-                id: 100,
-                question: "What is the keyboard shortcut to insert a mathematical equation in supported desktop versions of Word?",
-                options: ["Alt + =", "Ctrl + =", "Shift + =", "Ctrl + Alt + E"],
-                answer: 0
-            }
+            { id: 1, question: "Which keyboard shortcut is used to cut selected text or objects in Microsoft Word?", options: ["Ctrl + C", "Ctrl + X", "Ctrl + V", "Ctrl + Z"], answer: 1 },
+            { id: 2, question: "What is the primary function of the Format Painter tool found in the Clipboard group?", options: ["To paint background colors onto tables", "To copy formatting from one place and apply it to another", "To insert vector illustrations into documents", "To format paragraph line spacing automatically"], answer: 1 },
+            { id: 3, question: "Which keyboard shortcut is used to copy selected text to the clipboard?", options: ["Ctrl + C", "Ctrl + X", "Ctrl + V", "Ctrl + A"], answer: 0 },
+            { id: 4, question: "Which shortcut pastes the content currently held on the clipboard?", options: ["Ctrl + P", "Ctrl + V", "Ctrl + Shift + V", "Ctrl + Alt + V"], answer: 1 },
+            { id: 5, question: "How many separate copied or cut items can the Office Clipboard hold simultaneously in supported desktop versions?", options: ["1 item", "5 items", "24 items", "Unlimited"], answer: 2 },
+            { id: 6, question: "Which keyboard shortcut sequence copies the formatting of selected text?", options: ["Ctrl + Shift + C", "Ctrl + Alt + C", "Ctrl + C", "Alt + Shift + C"], answer: 0 },
+            { id: 7, question: "Which keyboard shortcut sequence applies copied formatting to selected text in supported versions of Word?", options: ["Ctrl + Shift + V", "Ctrl + Alt + V", "Ctrl + V", "Alt + Shift + V"], answer: 0 },
+            { id: 8, question: "When pasting text using the Paste Options dropdown, which option strips all formatting and matches the destination paragraph style?", options: ["Keep Source Formatting", "Merge Formatting", "Keep Text Only", "Picture"], answer: 2 },
+            { id: 9, question: "Where is the Clipboard group located on the Microsoft Word ribbon interface?", options: ["Insert Tab, far right", "Home Tab, far left", "View Tab, center", "Design Tab, left"], answer: 1 },
+            { id: 10, question: "What happens when you click the dialog box launcher in the bottom-right corner of the Clipboard group?", options: ["It opens the Font dialog box", "It opens the Office Clipboard task pane", "It opens Find and Replace", "It clears all clipboard history"], answer: 1 },
+            { id: 11, question: "Which action does the 'Cut' command perform compared to 'Copy'?", options: ["Removes the selected content and places it on the clipboard", "Copies the content without deleting it", "Permanently deletes the text without storing it", "Saves the text directly to cloud storage"], answer: 0 },
+            { id: 12, question: "What is the primary advantage of using the Office Clipboard task pane over standard paste?", options: ["It compresses file size", "It allows pasting multiple previously copied items selectively", "It translates text automatically", "It checks spelling and grammar"], answer: 1 },
+            { id: 13, question: "Which keyboard shortcut makes selected text bold?", options: ["Ctrl + B", "Ctrl + I", "Ctrl + U", "Ctrl + D"], answer: 0 },
+            { id: 14, question: "Which shortcut applies italic formatting to selected text?", options: ["Ctrl + T", "Ctrl + I", "Ctrl + Shift + I", "Ctrl + Alt + I"], answer: 1 },
+            { id: 15, question: "Which shortcut underlines selected text?", options: ["Ctrl + Line", "Ctrl + U", "Ctrl + Shift + U", "Ctrl + E"], answer: 1 },
+            { id: 16, question: "Which keyboard shortcut opens the Font dialog box for advanced character formatting?", options: ["Ctrl + F", "Ctrl + D", "Ctrl + Shift + F", "Ctrl + Font"], answer: 1 },
+            { id: 17, question: "What is the shortcut to clear all character formatting from selected text, returning it to the default style?", options: ["Ctrl + Q", "Ctrl + Spacebar", "Ctrl + Shift + N", "Ctrl + Delete"], answer: 1 },
+            { id: 18, question: "Which shortcut applies Superscript formatting to selected text?", options: ["Ctrl + Shift + =", "Ctrl + =", "Ctrl + Alt + =", "Ctrl + Shift + +"], answer: 0 },
+            { id: 19, question: "Which shortcut applies Subscript formatting to selected text?", options: ["Ctrl + Shift + Sub", "Ctrl + =", "Ctrl + Alt + -", "Ctrl + Minus"], answer: 1 },
+            { id: 20, question: "Which keyboard shortcut cycles through letter cases (Sentence case, lowercase, UPPERCASE, Capitalize Each Word, TOGGLE CASE)?", options: ["F3", "Shift + F3", "Ctrl + Shift + F3", "Alt + F3"], answer: 1 },
+            { id: 21, question: "What do the keyboard shortcuts Ctrl + ] and Ctrl + [ do to selected font size in Microsoft Word?", options: ["Increase/Decrease font size by one point", "Increase/Decrease font size by 2 points", "Change font family", "Adjust line spacing"], answer: 0 },
+            { id: 22, question: "Which keyboard shortcut combination increases font size using preset point increments in supported desktop versions?", options: ["Ctrl + Shift + >", "Ctrl + Shift + <", "Ctrl + Alt + >", "Ctrl + Alt + Shift"], answer: 0 },
+            { id: 23, question: "What is the purpose of the Strikethrough command in the Font group?", options: ["Draws a horizontal line through the center of text", "Draws a line underneath text", "Highlights text in neon yellow", "Crosses out text with a double underline"], answer: 0 },
+            { id: 24, question: "What does the Text Highlight Color tool do?", options: ["Changes text font color", "Applies a bright background color behind selected text", "Changes paragraph shading across the entire margin", "Adds a drop shadow"], answer: 1 },
+            { id: 25, question: "Which feature in the Font group provides modern visual styling like shadows, reflections, and glowing text effects?", options: ["Text Effects and Typography", "Font Color Palette", "Styles Pane", "WordArt Gallery"], answer: 0 },
+            { id: 26, question: "What is the default font size in points for a new blank document in Microsoft Word (recent versions)?", options: ["10 pt", "11 pt", "12 pt", "14 pt"], answer: 1 },
+            { id: 27, question: "What is the default font family for standard documents in recent versions of Microsoft Word?", options: ["Times New Roman", "Arial", "Calibri", "Courier New"], answer: 2 },
+            { id: 28, question: "Which button in the Font group is represented by an 'A' with a pink eraser icon?", options: ["Change Case", "Clear All Formatting", "Text Highlight Color", "Font Color"], answer: 1 },
+            { id: 29, question: "Can you apply gradient colors directly to regular body text using the standard Font Color dropdown?", options: ["Yes, through the standard palette", "No, gradients require Text Effects and Typography", "Only in Word for Web", "Never in Microsoft Word"], answer: 1 },
+            { id: 30, question: "Which shortcut decreases font size using preset point increments in supported desktop versions?", options: ["Ctrl + Shift + <", "Ctrl + Shift + >", "Ctrl + [", "Ctrl + ]"], answer: 0 },
+            { id: 31, question: "Which keyboard shortcut aligns a paragraph to the Left?", options: ["Ctrl + L", "Ctrl + E", "Ctrl + R", "Ctrl + J"], answer: 0 },
+            { id: 32, question: "Which shortcut centers a paragraph?", options: ["Ctrl + C", "Ctrl + E", "Ctrl + T", "Ctrl + M"], answer: 1 },
+            { id: 33, question: "Which shortcut aligns a paragraph to the Right?", options: ["Ctrl + R", "Ctrl + Right Arrow", "Ctrl + Shift + R", "Ctrl + Alt + R"], answer: 0 },
+            { id: 34, question: "Which keyboard shortcut justifies a paragraph (aligns text to both left and right margins)?", options: ["Ctrl + Z", "Ctrl + Y", "Ctrl + J", "Ctrl + F"], answer: 2 },
+            { id: 35, question: "What does the keyboard shortcut Ctrl + M do to a paragraph?", options: ["Moves paragraph to the next page", "Increases the paragraph indent", "Decreases the paragraph indent", "Applies medium line spacing"], answer: 1 },
+            { id: 36, question: "Which keyboard shortcut decreases the paragraph indent?", options: ["Ctrl + Shift + M", "Ctrl + Shift + D", "Ctrl + Alt + M", "Ctrl + M"], answer: 0 },
+            { id: 37, question: "What shortcut sets paragraph line spacing to single (1.0)?", options: ["Ctrl + 1", "Ctrl + S", "Ctrl + Single", "Ctrl + Shift + 1"], answer: 0 },
+            { id: 38, question: "What shortcut sets paragraph line spacing to double (2.0)?", options: ["Ctrl + D", "Ctrl + 2", "Ctrl + Shift + 2", "Ctrl + Double"], answer: 1 },
+            { id: 39, question: "What shortcut sets paragraph line spacing to 1.5 lines?", options: ["Ctrl + 1.5", "Ctrl + 5", "Ctrl + 3", "Ctrl + 15"], answer: 1 },
+            { id: 40, question: "What is the function of the shortcut Ctrl + Q in Microsoft Word?", options: ["Quit application", "Clear paragraph formatting", "Quick print", "Create new document"], answer: 1 },
+            { id: 41, question: "Which keyboard shortcut toggles the display of non-printing formatting marks (like paragraph symbols and spaces)?", options: ["Ctrl + Shift + 8", "Ctrl + *", "Ctrl + H", "Ctrl + Alt + 8"], answer: 0 },
+            { id: 42, question: "What tool in the Paragraph group is used to arrange selected text alphabetically or numerically?", options: ["Align", "Sort", "Filter", "Organize"], answer: 1 },
+            { id: 43, question: "What is the difference between bulleted lists and numbered lists?", options: ["Numbered lists show hierarchical sequence, bullets show unordered items", "Bullets can only be squares, numbers cannot be customized", "Numbered lists cannot have sub-levels", "There is no functional difference"], answer: 0 },
+            { id: 44, question: "Which list feature in the Paragraph group allows you to create hierarchical outlines with multiple sub-levels?", options: ["Multilevel List", "Bulleted List", "Table of Contents", "Indent Marker"], answer: 0 },
+            { id: 45, question: "What does the Shading bucket tool in the Paragraph group do?", options: ["Changes font color of text", "Colors the background area behind a selected paragraph or table cell", "Adds a solid border around the page", "Highlights specific words"], answer: 1 },
+            { id: 46, question: "How do paragraph spacing (Space Before/After) differ from line spacing?", options: ["Paragraph spacing controls space between entire paragraphs, line spacing controls space between lines within the same paragraph", "Line spacing is measured in inches, paragraph spacing in pixels", "Paragraph spacing only applies to headings", "There is no difference"], answer: 0 },
+            { id: 47, question: "Which border option allows you to place a horizontal dividing line across the page instantly?", options: ["Outside Border", "Horizontal Line", "Bottom Border", "Grid Border"], answer: 2 },
+            { id: 48, question: "What happens when you apply 'Justify' alignment to a paragraph with a very short final line?", options: ["The final line stretches across the entire width of the page", "The final line remains left-aligned", "The paragraph becomes centered", "The text is automatically hyphenated"], answer: 1 },
+            { id: 49, question: "What is a Style in Microsoft Word?", options: ["A collection of formatting settings (font, size, color) saved with a name for consistent application", "A theme color palette for charts", "An automated grammar correction tool", "A template for page margins"], answer: 0 },
+            { id: 50, question: "What is the primary benefit of using built-in heading styles (Heading 1, Heading 2) instead of manual formatting?", options: ["They automatically generate Navigation Pane entries and Navigation/Table of Contents data", "They reduce file size by 90%", "They make text uneditable by others", "They convert text to images"], answer: 0 },
+            { id: 51, question: "What is the default paragraph style applied to new text in a blank Word document?", options: ["Heading 1", "Normal", "Subtitle", "Intense Quote"], answer: 1 },
+            { id: 52, question: "How does 'Direct Formatting' differ from using 'Styles'?", options: ["Direct formatting applies manual formatting to specific text; Styles apply predefined sets of rules that can be updated globally across the document", "Direct formatting is only for tables, styles are for text", "Direct formatting cannot be undone", "Styles are only available in the Insert tab"], answer: 0 },
+            { id: 53, question: "Where is the Styles gallery located?", options: ["Home Tab, Styles group", "Insert Tab, Text group", "Design Tab, Document Formatting group", "View Tab, Window group"], answer: 0 },
+            { id: 54, question: "What feature allows you to change the overall color and font set of all styles in a document simultaneously?", options: ["Theme Sets in Design Tab", "Find and Replace", "Format Painter", "Style Inspector"], answer: 0 },
+            { id: 55, question: "Which keyboard shortcut opens the Find navigation pane?", options: ["Ctrl + F", "Ctrl + H", "Ctrl + A", "Ctrl + S"], answer: 0 },
+            { id: 56, question: "Which keyboard shortcut opens the Find and Replace dialog box?", options: ["Ctrl + R", "Ctrl + H", "Ctrl + F", "Ctrl + Shift + H"], answer: 1 },
+            { id: 57, question: "Which keyboard shortcut selects all content in the current document?", options: ["Ctrl + A", "Ctrl + S", "Ctrl + All", "Ctrl + Shift + A"], answer: 0 },
+            { id: 58, question: "What is the primary purpose of the Replace feature in Microsoft Word?", options: ["To swap two paragraphs", "To search for specific text and substitute it with alternative text globally or selectively", "To replace damaged font files", "To switch document templates"], answer: 1 },
+            { id: 59, question: "What advanced selection option allows you to select all text with similar formatting throughout the document?", options: ["Select Text with Similar Formatting", "Select All", "Advanced Select", "Object Selector"], answer: 0 },
+            { id: 60, question: "Where is the Editing group located on the Home tab ribbon?", options: ["Far left side", "Center", "Far right side", "On the Quick Access Toolbar"], answer: 2 },
+            { id: 61, question: "Which keyboard shortcut inserts a manual Page Break immediately?", options: ["Ctrl + Enter", "Ctrl + Shift + Enter", "Alt + Enter", "Shift + Enter"], answer: 0 },
+            { id: 62, question: "What is the difference between inserting a Blank Page and inserting a Page Break?", options: ["A Blank Page inserts a whole empty page at the cursor location, whereas a Page Break pushes subsequent content to the top of the next page", "A Page Break deletes existing content, Blank Page preserves it", "Blank pages can only be added at the end of a document", "There is no difference"], answer: 0 },
+            { id: 63, question: "What is the purpose of the Cover Page feature in the Pages group?", options: ["To insert professionally designed pre-formatted title pages at the beginning of a document", "To protect the document with a password", "To add a watermark", "To create a table of contents"], answer: 0 },
+            { id: 64, question: "Where is the Pages group located on the ribbon?", options: ["Insert Tab, far left", "Home Tab, far right", "Layout Tab, center", "Review Tab, left"], answer: 0 },
+            { id: 65, question: "If you want to end a paragraph without creating a new paragraph (forcing a line break within the same paragraph), which shortcut do you use?", options: ["Shift + Enter", "Ctrl + Enter", "Alt + Enter", "Enter alone"], answer: 0 },
+            { id: 66, question: "Why are page breaks preferred over pressing the Enter key repeatedly to start a new page?", options: ["Page breaks maintain proper layout even if text is added or deleted earlier in the document", "Page breaks reduce file size by half", "Enter key is disabled on page 2", "Page breaks enable spell check"], answer: 0 },
+            { id: 67, question: "What is a Table in Microsoft Word primarily used for?", options: ["Organizing and presenting data in rows and columns", "Inserting mathematical formulas only", "Creating vector graphics", "Designing page borders"], answer: 0 },
+            { id: 68, question: "How can you convert existing comma-separated or tab-separated text into a structured table?", options: ["Using the 'Convert Text to Table' wizard in the Tables group", "Using Find and Replace", "Using Format Painter", "It is not possible in Word"], answer: 0 },
+            { id: 69, question: "What is the intersection of a row and a column in a Word table called?", options: ["A Cell", "A Block", "A Field", "A Grid"], answer: 0 },
+            { id: 70, question: "Which context-sensitive tabs appear automatically when a table is selected in Microsoft Word?", options: ["Table Design and Layout", "Format and Edit", "Insert and Draw", "Chart Tools"], answer: 0 },
+            { id: 71, question: "Can you perform basic mathematical calculations (like SUM or AVERAGE) inside a Microsoft Word table?", options: ["Yes, using formula fields", "No, formulas are restricted to Excel", "Only if connected to an external database", "Only in PDF exports"], answer: 0 },
+            { id: 72, question: "What happens when you press the Tab key while typing in the bottom-right cell of an existing Word table?", options: ["A new row is automatically added below", "The cursor moves to the start of the document", "Nothing happens", "The table is deleted"], answer: 0 },
+            { id: 73, question: "How do you select an entire column in a Word table quickly using the mouse?", options: ["Click just above the top border of the column", "Double click any cell", "Triple click inside the first cell", "Drag across all cells manually"], answer: 0 },
+            { id: 74, question: "What is the purpose of splitting cells in a table?", options: ["To divide a single cell into multiple rows or columns", "To delete the cell contents", "To merge two tables together", "To convert table to text"], answer: 0 },
+            { id: 75, question: "Which feature in the Illustrations group allows you to insert graphic files stored on your local computer?", options: ["Pictures", "Shapes", "SmartArt", "Icons"], answer: 0 },
+            { id: 76, question: "What is the primary purpose of SmartArt graphics in Microsoft Word?", options: ["To create professional visual information and diagrams (like organizational charts, processes, and cycles)", "To edit photographs with filters", "To plot complex mathematical functions", "To insert vector logos"], answer: 0 },
+            { id: 77, question: "Which tool in the Illustrations group allows you to capture and insert an image of an active window on your desktop directly into your document?", options: ["Screenshot", "Online Pictures", "Icons", "Chart"], answer: 0 },
+            { id: 78, question: "What type of visual representation does the Chart tool insert into Word documents?", options: ["Data-driven graphical charts (Bar, Pie, Line, Column) linked to Excel data worksheets", "Hand-drawn sketches", "Raster photo filters", "Animation timelines"], answer: 0 },
+            { id: 79, question: "What happens when you insert pre-drawn geometric objects like rectangles, arrows, or callouts from the Shapes gallery?", options: ["They act as vector objects that can be formatted, resized, and layered with text", "They instantly convert into tables", "They are saved as separate image files", "They replace the document text"], answer: 0 },
+            { id: 80, question: "What is the function of 'Text Wrapping' around inserted illustrations?", options: ["It controls how surrounding paragraph text flows around or interacts with the image (e.g., Square, Tight, Through, Behind Text)", "It translates text inside the image", "It adds a caption automatically", "It compresses the image file size"], answer: 0 },
+            { id: 81, question: "Why is maintaining aspect ratio important when resizing inserted pictures?", options: ["It prevents the image from becoming distorted or stretched disproportionately", "It reduces the document page count", "It increases print resolution automatically", "It is required by copyright law"], answer: 0 },
+            { id: 82, question: "Where is the Illustrations group located on the ribbon?", options: ["Insert Tab", "Home Tab", "Design Tab", "Review Tab"], answer: 0 },
+            { id: 83, question: "Which keyboard shortcut is used to insert a Hyperlink in Microsoft Word?", options: ["Ctrl + K", "Ctrl + H", "Ctrl + L", "Ctrl + Link"], answer: 0 },
+            { id: 84, question: "What is the primary function of a Bookmark in Microsoft Word?", options: ["To mark a specific location or position in a document so you can easily jump back to it later", "To save a webpage to your browser favorites", "To bookmark print pages", "To highlight text in yellow"], answer: 0 },
+            { id: 85, question: "What does a Cross-reference allow you to do?", options: ["Insert a dynamic reference to specific document items (like headings, figures, or footnotes) that update automatically", "Link to external websites", "Translate text across languages", "Insert footnotes at the end of the book"], answer: 0 },
+            { id: 86, question: "Can hyperlinks in Word link to external web pages, email addresses, or specific locations within the same document?", options: ["Yes, to all of them", "Only to external web pages", "Only to email addresses", "Only to local files"], answer: 0 },
+            { id: 87, question: "How do you follow an active hyperlink in a Word document while editing?", options: ["Hold Ctrl and click the hyperlink", "Double click the link", "Right-click and select Open", "Press Enter on the link"], answer: 0 },
+            { id: 88, question: "Where is the Links group located on the ribbon?", options: ["Insert Tab", "Home Tab", "Reference Tab", "View Tab"], answer: 0 },
+            { id: 89, question: "What is the purpose of a Header in a Microsoft Word document?", options: ["To display repeating text, document titles, or dates at the top margin of every page", "To create a cover page title", "To add footnotes at the end of paragraphs", "To format table headers"], answer: 0 },
+            { id: 90, question: "What is a Footer used for?", options: ["To display repeating content like page numbers, author names, or file paths at the bottom margin of pages", "To insert endnotes", "To add table borders", "To create a bibliography"], answer: 0 },
+            { id: 91, question: "How can you make the header and footer on the first page of a document different from the rest of the document?", options: ["Check the 'Different First Page' option in Header & Footer design tools", "Delete the header manually on page 1", "Use a separate Word document", "Insert a section break and unlink headers"], answer: 0 },
+            { id: 92, question: "Where are Headers and Footers located on the printed page margins?", options: ["Within the top and bottom margin areas", "In the center of the text body", "Outside the physical page boundaries", "Inside tables only"], answer: 0 },
+            { id: 93, question: "Can you insert dynamic page numbers (e.g., Page 1 of 10) into headers or footers?", options: ["Yes, using Quick Parts or Page Number fields", "No, page numbers must be typed manually", "Only in Adobe PDF format", "Only on the final page"], answer: 0 },
+            { id: 94, question: "Which tab houses the Header & Footer group?", options: ["Insert Tab", "Home Tab", "Layout Tab", "Review Tab"], answer: 0 },
+            { id: 95, question: "What is the purpose of the Drop Cap feature in the Text group?", options: ["To create a large decorative capital letter at the beginning of a paragraph, spanning multiple lines", "To convert lowercase text to uppercase", "To drop text into a footnote", "To insert a watermark"], answer: 0 },
+            { id: 96, question: "What is WordArt used for?", options: ["Creating stylized decorative text with special effects like shadows, gradients, and outlines", "Checking spelling and grammar", "Translating foreign languages", "Creating flowcharts"], answer: 0 },
+            { id: 97, question: "What is a Text Box used for in Microsoft Word?", options: ["To place movable, independently positioned blocks of text anywhere on the page layout", "To enclose paragraphs in permanent borders", "To write formulas", "To create tables"], answer: 0 },
+            { id: 98, question: "What is the function of the 'Date & Time' tool in the Text group?", options: ["To insert the current date and time with options for automatic updating", "To set the computer system clock", "To schedule document backups", "To calculate deadlines"], answer: 0 },
+            { id: 99, question: "What is the purpose of the Equation tool in the Symbols group?", options: ["To insert formatted mathematical and scientific equations (like fractions, integrals, and matrices)", "To solve algebraic homework automatically", "To calculate table totals", "To check syntax in code"], answer: 0 },
+            { id: 100, question: "What is the keyboard shortcut to insert a mathematical equation in supported desktop versions of Word?", options: ["Alt + =", "Ctrl + =", "Shift + =", "Ctrl + Alt + E"], answer: 0 }
         ];
 
-        // Runtime examination state
         let currentUser = null;
         let activeSessionKey = null;
         let currentQuestionIndex = 0;
-        let questions = []; // Randomized per session
-        let userAnswers = {}; // questionId -> selectedOptionIndex
-        let questionStatus = {}; // questionId -> 'not-visited', 'visited-not-answered', 'answered', 'marked', 'answered-marked'
+        let questions = [];
+        let userAnswers = {};
+        let questionStatus = {};
         let timerInterval = null;
-        let timeRemaining = 3600; // 60 minutes in seconds
+        let timeRemaining = 3600;
         let examSubmitted = false;
 
-        // Credentials
         const validCredentials = {
             "admin100": "100",
             "admin101": "101"
         };
 
-        // UI navigation helper
         function switchScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
+            const target = document.getElementById(screenId);
+            if (target) {
+                target.classList.add('active');
+            }
         }
 
         function togglePasswordVisibility() {
@@ -1433,7 +877,6 @@
             }
         }
 
-        // Fisher-Yates shuffle helper preserving correct option index
         function shuffleArray(array) {
             let arr = [...array];
             for (let i = arr.length - 1; i > 0; i--) {
@@ -1444,7 +887,6 @@
         }
 
         function startExamination() {
-            // Check if saved session exists for this candidate
             const savedStateStr = localStorage.getItem(activeSessionKey);
             if (savedStateStr) {
                 try {
@@ -1468,7 +910,6 @@
         }
 
         function initNewSession() {
-            // Deep clone and shuffle questions and their options
             questions = rawQuestionBank.map(q => {
                 const originalOptionsWithIndex = q.options.map((opt, idx) => ({ text: opt, isCorrect: idx === q.answer }));
                 const shuffledOpts = shuffleArray(originalOptionsWithIndex);
@@ -1480,7 +921,6 @@
                     answer: newAnswerIndex
                 };
             });
-            // Shuffle question order as well
             questions = shuffleArray(questions);
 
             userAnswers = {};
@@ -1505,7 +945,6 @@
             localStorage.setItem(activeSessionKey, JSON.stringify(state));
         }
 
-        // Timer implementation based on timestamp delta to prevent drift and reset on reload
         let timerStartTime = null;
         let initialDuration = 3600;
 
@@ -1532,7 +971,6 @@
                 initialDuration = parseInt(localStorage.getItem(`${activeSessionKey}_duration`) || '3600', 10);
             }
 
-            // Immediate display initialization
             updateTimerDisplay();
 
             timerInterval = setInterval(() => {
@@ -1568,7 +1006,6 @@
             document.getElementById('question-number-tag').textContent = `Question ${currentQuestionIndex + 1} of 100`;
             document.getElementById('question-title-text').textContent = q.question;
 
-            // Update status if currently not-visited
             if (questionStatus[q.id] === 'not-visited') {
                 questionStatus[q.id] = 'visited-not-answered';
             }
@@ -1584,8 +1021,10 @@
                     <input type="radio" name="q_opt" id="opt_${optIdx}" ${isSelected ? 'checked' : ''} onchange="selectOption(${optIdx})">
                     <label for="opt_${optIdx}" style="cursor:pointer; flex:1;">${optText}</label>
                 `;
-                optDiv.onclick = () => {
-                    document.getElementById(`opt_${optIdx}`).checked = true;
+                optDiv.onclick = (e) => {
+                    if(e.target.tagName !== 'INPUT') {
+                        document.getElementById(`opt_${optIdx}`).checked = true;
+                    }
                     selectOption(optIdx);
                 };
                 optionsContainer.appendChild(optDiv);
@@ -1599,7 +1038,6 @@
             const q = questions[currentQuestionIndex];
             userAnswers[q.id] = optIdx;
             
-            // Update status badge
             if (questionStatus[q.id] === 'marked') {
                 questionStatus[q.id] = 'answered-marked';
             } else {
@@ -1607,7 +1045,6 @@
             }
             updatePaletteUI();
             
-            // Highlight selected option class in DOM
             document.querySelectorAll('.option-item').forEach((el, idx) => {
                 if (idx === optIdx) el.classList.add('selected');
                 else el.classList.remove('selected');
@@ -1690,7 +1127,6 @@
             });
         }
 
-        // Submission Modal
         function openSubmitModal() {
             if (examSubmitted) return;
             
@@ -1729,7 +1165,6 @@
             closeSubmitModal();
             if (timerInterval) clearInterval(timerInterval);
 
-            // Calculate results accurately
             let correct = 0;
             let attempted = 0;
 
@@ -1745,9 +1180,8 @@
             const incorrect = attempted - correct;
             const unattempted = 100 - attempted;
             const marksObtained = correct;
-            const percentage = correct; // 100 marks total
+            const percentage = correct;
 
-            // Display results
             document.getElementById('score-val').textContent = marksObtained;
             document.getElementById('res-percentage').textContent = `${percentage}%`;
             document.getElementById('res-attempted').textContent = attempted;
@@ -1766,7 +1200,6 @@
                 remarkEl.textContent = "Needs improvement. Thorough study of MS Word Home and Insert tab features recommended.";
             }
 
-            // Clear session state
             localStorage.removeItem(activeSessionKey);
             localStorage.removeItem(`${activeSessionKey}_timer_start`);
             localStorage.removeItem(`${activeSessionKey}_duration`);
@@ -1787,9 +1220,7 @@
 
         function toggleFullscreen() {
             if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.error("Error attempting to enable fullscreen:", err);
-                });
+                document.documentElement.requestFullscreen().catch(err => {});
             } else {
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
